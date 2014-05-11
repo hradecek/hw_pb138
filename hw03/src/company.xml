@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- the markup is similar but not the same as in the previous tasks -->
+<company>
+    <name>Fruits International</name>
+    <!-- did is required, a string -->
+    <division did="production_zlin">
+        <!-- name is optional and contains a string -->
+        <name>Production factory Zlín</name>
+        <!-- head is optional and contains always a person if present -->
+        <head>
+            <!-- pid is required, unique, string -->
+            <person pid="1"> 	
+                <!-- name is required, non-empty string -->	 
+                <name>Pavel</name>	 
+                <!-- surname is required, non-empty string -->
+                <surname>Novák</surname> 
+                <!-- salary is required, positive number 
+                with 2 decimal places precision, e.g. 10000.50 -->
+                <salary>20000.00</salary> 
+                <!-- note optional element, repeatable, contains any string -->  
+                <note>Poznámka</note>   
+            </person>            
+        </head>
+        <!-- employees element contains zero or more employee elts -->
+        <employees>
+            <!-- position is neither required nor unique -->
+            <employee position="worker">
+                <!-- employee contains zero or one person -->
+                <person pid="2">
+                    <name>Libor</name>
+                    <surname>Polák</surname>
+                    <salary>29000.00</salary>
+                </person>
+            </employee>
+            <employee position="packaging">
+                <person pid="4">
+                    <name>Jan</name>
+                    <surname>Hroza</surname>
+                    <salary>78475.25</salary>
+                </person>
+            </employee>
+        </employees>
+    </division>
+    <division did="production_holesov">
+        <!-- name is optional and contains a string -->
+        <name>Production factory Holešov</name>
+        <!-- head is optional and contains always a person if present -->
+        <head>
+            <!-- pid is required, unique, string -->
+            <person pid="10"> 	
+                <!-- name is required, non-empty string -->	 
+                <name>Robert</name>	 
+                <!-- surname is required, non-empty string -->
+                <surname>Záruba</surname> 
+                <!-- salary is required, positive number 
+                with 2 decimal places precision, e.g. 10000.50 -->
+                <salary>25000.00</salary> 
+            </person>            
+        </head>
+        <!-- employees element contains zero or more employee elts -->
+        <employees>
+            <!-- position is neither required nor unique -->
+            <employee position="worker">
+                <!-- employee contains zero or one person -->
+                <person pid="11">
+                    <name>Josef</name>
+                    <surname>Vejražka</surname>
+                    <salary>29500.00</salary>
+                </person>
+            </employee>
+            <employee position="packaging">
+                <person pid="4">
+                    <name>Jaroslav</name>
+                    <surname>Dostál</surname>
+                    <salary>8475.25</salary>
+                </person>
+            </employee>
+        </employees>
+    </division>
+    <product prod-id="ffbz" produced-at="production_zlin">
+        <name>First Fruit Basket from Zlín</name>
+    </product>
+    <product prod-id="sfbh" produced-at="production_holesov">
+        <name>Second Fruit Basket from Holešov</name>
+    </product>    
+    <product prod-id="tfbz" produced-at="production_zlin">
+        <name>Third Fruit Basket from Zlín</name>
+    </product>
+    <product prod-id="ffbh" produced-at="production_holesov">
+        <name>Fourth Fruit Basket from Holešov</name>
+    </product>
+</company>
