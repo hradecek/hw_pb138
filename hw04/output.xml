@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sales>
+   <product>
+      <name>First Fruit Basket from Zlín</name>
+      <produced-in>Production factory Zlín</produced-in>
+   </product>
+   <product>
+      <name>Second Fruit Basket from Holešov</name>
+      <produced-in>Production factory Holešov</produced-in>
+      <sold currency="CZK" total="350"/>
+   </product>
+   <product>
+      <name>Third Fruit Basket from Zlín</name>
+      <produced-in>Production factory Zlín</produced-in>
+      <sold currency="CZK" total="150"/>
+      <sold currency="EUR" total="13"/>
+   </product>
+   <product>
+      <name>Fourth Fruit Basket from Holešov</name>
+      <produced-in>Production factory Holešov</produced-in>
+      <sold currency="CZK" total="340"/>
+   </product>
+</sales>
