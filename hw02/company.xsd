@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<xsd:schema version="1.0"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            elementFormDefault="qualified">
+
+    <!-- definition of simple types -->            
+    <!-- string types -->       
+    <xsd:simpleType name="nameType"> <!-- Need to be valid also for names: van Damme, d'Alambert, Ce-tung ... -->
+        <xsd:restriction base="xsd:string">            
+            <xsd:pattern value="\p{Lu}\p{Ll}+( |([\p{Lu}\p{Ll}]')?|(\p{Lu}?\p{Ll}+-?)*)*" /> 
+        </xsd:restriction>
+    </xsd:simpleType>    
+
+    <xsd:simpleType name="descriptionType">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="\p{Lu}\p{L}*( \p{L}+)*" />
+        </xsd:restriction>
+    </xsd:simpleType>
+        
+    <xsd:simpleType name="nonEmptyANStrType"> <!-- non empty *A*lpha *N*umeric string -->
+        <xsd:restriction base="xsd:string">            
+            <xsd:pattern value="[a-zA-Z0-9]+( [a-zA-Z0-9]+)*" />
+        </xsd:restriction>
+    </xsd:simpleType>
+        
+    <xsd:simpleType name="nonEmptyNWStrType"> <!-- non empty *No* *W*hitespaces string -->
+        <xsd:restriction base="xsd:string">
+            <!-- <xsd:minLength value="1" /> -->                        
+            <xsd:pattern value="(\p{L}_?)+" />
+        </xsd:restriction>
+    </xsd:simpleType>
+    
+    <!-- numeric types -->
+    <xsd:simpleType name="positiveRealType">
+        <xsd:restriction base="xsd:decimal">
+            <xsd:minExclusive value="0.00" />
+            <xsd:pattern value="[1-9]\d*\.\d{2}" />
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="nonNegativeRealType">
+        <xsd:restriction base="xsd:decimal">            
+            <xsd:minInclusive value="0.00" />
+            <xsd:pattern value="0\.\d{2}" />
+            <xsd:pattern value="[1-9]\d*\.\d{2}" />
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="negativeRealType">
+        <xsd:restriction base="xsd:decimal">
+            <xsd:maxExclusive value="0.00" />
+            <xsd:pattern value="-?[1-9]\d*\.\d{2}" />
+        </xsd:restriction>
+    </xsd:simpleType>        
+    
+    <!-- definition of groups -->
+    <xsd:group name="productionServiceGroup">
+        <xsd:sequence>
+            <xsd:element name="name" type="nonEmptyANStrType" />
+            <xsd:element name="costs" type="negativeRealType" />
+            <xsd:element name="price" type="nonNegativeRealType" />            
+        </xsd:sequence>
+    </xsd:group>
+    
+    <xsd:group name="productionCommodityGroup">
+        <xsd:sequence>
+            <xsd:element name="description" type="descriptionType" />
+            <xsd:choice>
+                <xsd:element name="price" type="nonNegativeRealType" />
+                <xsd:element name="costs" type="negativeRealType" />
+            </xsd:choice>
+        </xsd:sequence>        
+    </xsd:group>
+    
+    <!-- definition of complex types -->
+    <xsd:complexType name="companyType">     
+        <xsd:sequence>        
+            <xsd:element name="division" type="divisionType" minOccurs="1" maxOccurs="unbounded" />                                            
+        </xsd:sequence>        
+    </xsd:complexType>
+   
+    <xsd:complexType name="divisionType">
+        <xsd:sequence>
+            <xsd:element name="name" type="xsd:string" minOccurs="0" />
+            <xsd:element name="head" type="headType" minOccurs="0" />            
+            <xsd:element name="products" type="productsType" minOccurs="0" />
+        </xsd:sequence>       
+        <xsd:attribute name="did" type="xsd:string" use="required" />
+    </xsd:complexType>
+
+    <xsd:complexType name="headType">
+        <xsd:sequence>
+            <xsd:element name="person" type="personType" minOccurs="1" />                            
+        </xsd:sequence>
+    </xsd:complexType>
+          
+    <xsd:complexType name="personType">         
+        <xsd:sequence>        
+            <xsd:element name="name" type="nameType" minOccurs="1" />
+            <xsd:element name="surname" type="nameType" minOccurs="1" />
+            <xsd:element name="salary" type="positiveRealType" minOccurs="1" />
+            <xsd:element name="note" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />        
+        </xsd:sequence>                 
+        <xsd:attribute name="pid" type="xsd:positiveInteger" use="required" />   
+    </xsd:complexType>
+
+    <xsd:complexType name="productsType">
+        <xsd:sequence>
+            <xsd:element name="product" type="productType" minOccurs="1" maxOccurs="unbounded" />
+        </xsd:sequence>        
+    </xsd:complexType>            
+        
+    <xsd:complexType name="productType">        
+        <xsd:choice minOccurs="1" maxOccurs="unbounded" >            
+            <xsd:group ref="productionCommodityGroup" />
+            <xsd:group ref="productionServiceGroup" />
+        </xsd:choice>
+        <xsd:attribute name="category" type="nonEmptyNWStrType" use="required" />
+    </xsd:complexType>    
+         
+    <!-- ROOT -->   
+    <xsd:element name="company" type="companyType">    
+        <xsd:unique name="pidUnique">
+            <xsd:selector xpath="division/head/person" />
+            <xsd:field xpath="@pid" />
+        </xsd:unique>
+        <xsd:unique name="didUnique">
+            <xsd:selector xpath="division" />
+            <xsd:field xpath="@did" />
+        </xsd:unique>
+    </xsd:element>
+    
+</xsd:schema>
